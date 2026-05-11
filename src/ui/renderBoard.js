@@ -40,6 +40,13 @@ export function renderBoard(
         )
       }
 
+      // マスクリック
+      div.addEventListener(
+        'click',
+        () => onCellClick(x, y)
+      )
+
+      // 駒
       if (cell) {
 
         const piece =
@@ -51,23 +58,16 @@ export function renderBoard(
         piece.textContent =
           PIECES[cell].emoji
 
+        // アニメだけ
         piece.addEventListener(
           'click',
-          e => {
-
-            e.stopPropagation()
-
+          () => {
             bouncePiece(piece)
           }
         )
 
         div.appendChild(piece)
       }
-
-      div.addEventListener(
-        'click',
-        () => onCellClick(x, y)
-      )
 
       board.appendChild(div)
     })
