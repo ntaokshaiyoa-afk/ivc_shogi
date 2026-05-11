@@ -1,8 +1,31 @@
+// src/core/board.js
+
 export function createInitialBoard() {
+
   return [
-    [null, 'enemy', null],
-    [null, null, null],
-    [null, null, null],
-    [null, 'chick', null]
+
+    [
+      'enemyGiraffe',
+      'enemyLion',
+      'enemyElephant'
+    ],
+
+    [
+      null,
+      'enemyChick',
+      null
+    ],
+
+    [
+      null,
+      'chick',
+      null
+    ],
+
+    [
+      'elephant',
+      'lion',
+      'giraffe'
+    ]
   ]
 }
