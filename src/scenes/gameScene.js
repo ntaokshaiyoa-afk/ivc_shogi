@@ -9,6 +9,10 @@ import { renderBoard }
 import { renderHud }
   from '../ui/hud'
 
+import {
+  renderBuildInfo
+} from '../ui/buildInfo'
+
 import { cpuMove }
   from '../core/ai'
 
@@ -59,7 +63,10 @@ export function createGameScene(app) {
       highlights,
       handleClick
     )
+    
+    renderBuildInfo(app)
   }
+}
 
   function finishGame(winner) {
 
