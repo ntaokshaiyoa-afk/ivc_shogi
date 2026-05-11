@@ -74,7 +74,6 @@ export function createGameScene(app) {
 
     renderBuildInfo(app)
   }
-}
 
   function finishGame(winner) {
 
