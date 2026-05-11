@@ -322,3 +322,52 @@ body {
 
   z-index: 999;
 }
+
+/* =========================
+   紙吹雪
+========================= */
+
+.confetti {
+
+  position: fixed;
+
+  top: -20px;
+
+  width: 16px;
+  height: 16px;
+
+  border-radius: 4px;
+
+  background:
+    hsl(
+      calc(360 * var(--i)),
+      90%,
+      65%
+    );
+
+  animation:
+    confettiFall 3s linear forwards;
+
+  z-index: 9999;
+}
+
+@keyframes confettiFall {
+
+  from {
+
+    transform:
+      translateY(0)
+      rotate(0deg);
+
+    opacity: 1;
+  }
+
+  to {
+
+    transform:
+      translateY(110vh)
+      rotate(720deg);
+
+    opacity: 0;
+  }
+}
