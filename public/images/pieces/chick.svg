@@ -1,24 +1,49 @@
 <svg xmlns="http://www.w3.org/2000/svg"
      width="128"
-     height="128">
+     height="128"
+     viewBox="0 0 128 128">
 
-  <circle
-    cx="64"
-    cy="64"
-    r="54"
-    fill="#ffe082"/>
+  <!-- 体 -->
+  <circle cx="64"
+          cy="68"
+          r="44"
+          fill="#ffe082"/>
 
-  <circle
-    cx="50"
-    cy="52"
-    r="5"/>
+  <!-- 頭 -->
+  <circle cx="64"
+          cy="48"
+          r="30"
+          fill="#fff176"/>
 
-  <circle
-    cx="78"
-    cy="52"
-    r="5"/>
+  <!-- 目 -->
+  <circle cx="54"
+          cy="46"
+          r="5"
+          fill="#222"/>
 
-  <polygon
-    points="64,70 78,84 50,84"
+  <circle cx="74"
+          cy="46"
+          r="5"
+          fill="#222"/>
+
+  <!-- くちばし -->
+  <polygon points="
+    64,56
+    76,68
+    52,68"
     fill="#ff9800"/>
+
+  <!-- 羽 -->
+  <ellipse cx="42"
+           cy="72"
+           rx="10"
+           ry="16"
+           fill="#fff59d"/>
+
+  <ellipse cx="86"
+           cy="72"
+           rx="10"
+           ry="16"
+           fill="#fff59d"/>
+
 </svg>
