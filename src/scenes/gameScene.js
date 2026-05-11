@@ -6,6 +6,14 @@ import { Game }
 import { renderBoard }
   from '../ui/renderBoard'
 
+import {
+  renderHands
+} from '../ui/renderHands'
+
+import {
+  renderFingerGuide
+} from '../ui/fingerGuide'
+
 import { renderHud }
   from '../ui/hud'
 
@@ -66,13 +74,23 @@ export function createGameScene(app) {
     )
 
     renderBoard(
-      boardRoot,
-      game,
-      highlights,
-      handleClick
-    )
+  boardRoot,
+  game,
+  highlights,
+  handleClick
+)
 
-    renderBuildInfo(app)
+renderFingerGuide(
+  boardRoot,
+  highlights
+)
+
+renderHands(
+  app,
+  game
+)
+
+renderBuildInfo(app)
   }
 
   function finishGame(winner) {
