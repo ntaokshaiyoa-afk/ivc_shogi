@@ -108,6 +108,83 @@ body {
   position: relative;
 }
 
+/* 選択中 */
+.cell.selected {
+
+  outline:
+    6px solid #ffb300;
+
+  outline-offset:
+    -6px;
+}
+
+/* 持ち駒 */
+.hands {
+
+  margin-top: 16px;
+
+  display: flex;
+  justify-content: center;
+}
+
+.hand {
+
+  display: flex;
+  gap: 8px;
+
+  min-height: 64px;
+}
+
+.hand-piece {
+
+  width: 56px;
+  height: 56px;
+
+  background: white;
+
+  border-radius: 16px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 32px;
+
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* 指 */
+.finger-guide {
+
+  position: absolute;
+
+  font-size: 42px;
+
+  animation:
+    fingerBounce 0.8s infinite;
+
+  pointer-events: none;
+}
+
+@keyframes fingerBounce {
+
+  0% {
+    transform:
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      translateY(12px);
+  }
+
+  100% {
+    transform:
+      translateY(0);
+  }
+}
+
 /* =========================
    HIGHLIGHT
 ========================= */
