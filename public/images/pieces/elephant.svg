@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="128"
+     height="128"
+     viewBox="0 0 128 128">
+
+  <!-- 耳 -->
+  <circle cx="34"
+          cy="64"
+          r="24"
+          fill="#b0bec5"/>
+
+  <circle cx="94"
+          cy="64"
+          r="24"
+          fill="#b0bec5"/>
+
+  <!-- 顔 -->
+  <circle cx="64"
+          cy="60"
+          r="36"
+          fill="#cfd8dc"/>
+
+  <!-- 鼻 -->
+  <rect x="52"
+        y="68"
+        width="24"
+        height="36"
+        rx="12"
+        fill="#b0bec5"/>
+
+  <!-- 目 -->
+  <circle cx="50"
+          cy="56"
+          r="5"
+          fill="#222"/>
+
+  <circle cx="78"
+          cy="56"
+          r="5"
+          fill="#222"/>
+
+  <!-- 鼻穴 -->
+  <circle cx="58"
+          cy="92"
+          r="3"
+          fill="#78909c"/>
+
+  <circle cx="70"
+          cy="92"
+          r="3"
+          fill="#78909c"/>
+
+</svg>
