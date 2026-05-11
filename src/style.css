@@ -254,6 +254,10 @@ body {
     scale(0.92);
 }
 
+.enemy {
+  transform: rotate(180deg);
+}
+
 .build-info {
 
   position: fixed;
