@@ -1,4 +1,7 @@
-import { PIECES } from '../core/pieceData'
+// src/ui/renderBoard.js
+
+import { PIECES }
+  from '../core/pieceData'
 
 export function renderBoard(
   container,
@@ -6,7 +9,6 @@ export function renderBoard(
   highlights,
   onCellClick
 ) {
-  container.innerHTML = ''
 
   const board =
     document.createElement('div')
@@ -14,6 +16,7 @@ export function renderBoard(
   board.className = 'board'
 
   game.board.forEach((row, y) => {
+
     row.forEach((cell, x) => {
 
       const div =
@@ -28,14 +31,18 @@ export function renderBoard(
         )
 
       if (canMove) {
-        div.classList.add('highlight')
+        div.classList.add(
+          'highlight'
+        )
       }
 
       if (cell) {
+
         const piece =
           document.createElement('div')
 
-        piece.className = 'piece'
+        piece.className =
+          'piece'
 
         piece.textContent =
           PIECES[cell].emoji
