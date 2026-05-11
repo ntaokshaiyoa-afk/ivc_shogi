@@ -6,7 +6,8 @@ import {
 
 export function renderHands(
   app,
-  game
+  game,
+  onSelect
 ) {
 
   const root =
@@ -30,8 +31,22 @@ export function renderHands(
       div.className =
         'hand-piece'
 
+      if (
+        game.selectedHandPiece
+        === piece
+      ) {
+        div.classList.add(
+          'selected-hand'
+        )
+      }
+
       div.textContent =
         PIECES[piece].emoji
+
+      div.addEventListener(
+        'click',
+        () => onSelect(piece)
+      )
 
       player.appendChild(div)
     }
