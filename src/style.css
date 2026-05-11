@@ -175,3 +175,28 @@ body {
   transform:
     scale(0.92);
 }
+
+.build-info {
+
+  position: fixed;
+
+  bottom: 12px;
+  right: 16px;
+
+  font-size: 14px;
+
+  color: rgba(0,0,0,0.45);
+
+  background:
+    rgba(255,255,255,0.7);
+
+  padding:
+    6px 10px;
+
+  border-radius: 999px;
+
+  backdrop-filter:
+    blur(4px);
+
+  z-index: 999;
+}
