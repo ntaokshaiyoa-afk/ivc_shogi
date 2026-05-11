@@ -1,133 +1,19 @@
-// src/ui/renderBoard.js
+// src/ui/pieceImage.js
 
-import {
-  PIECES
-} from '../core/pieceData'
+const BASE =
+  import.meta.env.BASE_URL
 
-import {
-  bouncePiece
-} from './effects'
-
-import {
-  pieceImageSrc
-} from './pieceImage'
-
-export function renderBoard(
-  container,
-  game,
-  highlights,
-  onCellClick
+export function pieceImageSrc(
+  piece
 ) {
 
-  const board =
-    document.createElement('div')
+  const normalized =
+    piece
+      .replace('enemy', '')
+      .toLowerCase()
 
-  board.className = 'board'
-
-  game.board.forEach((row, y) => {
-
-    row.forEach((cell, x) => {
-
-      const div =
-        document.createElement('div')
-
-      div.className = 'cell'
-
-      // 選択中
-      if (
-        game.selected &&
-        game.selected.x === x &&
-        game.selected.y === y
-      ) {
-
-        div.classList.add(
-          'selected'
-        )
-      }
-
-      // 移動可能
-      const canMove =
-        highlights.some(m =>
-          m.x === x &&
-          m.y === y
-        )
-
-      if (canMove) {
-
-        div.classList.add(
-          'highlight'
-        )
-      }
-
-      // クリック
-      div.addEventListener(
-        'click',
-        () => onCellClick(x, y)
-      )
-
-      // 駒
-      if (cell) {
-
-        const wrapper =
-          document.createElement(
-            'div'
-          )
-
-        wrapper.className =
-          'piece-wrapper'
-
-        // SVG画像
-        const img =
-          document.createElement(
-            'img'
-          )
-
-        img.className =
-          'piece'
-
-        img.src =
-          pieceImageSrc(cell)
-
-        img.draggable =
-          false
-
-        // フォールバック
-        img.onerror = () => {
-
-          img.remove()
-
-          const fallback =
-            document.createElement(
-              'div'
-            )
-
-          fallback.className =
-            'piece-fallback'
-
-          fallback.textContent =
-            PIECES[cell].emoji
-
-          wrapper.appendChild(
-            fallback
-          )
-        }
-
-        img.addEventListener(
-          'click',
-          () => {
-
-            bouncePiece(img)
-          }
-        )
-
-        wrapper.appendChild(img)
-
-        div.appendChild(wrapper)
-      }
-
-      board.appendChild(div)
-    })
-  })
-
-  container.appendChild(board)
+  return (
+    `${BASE}images/pieces/` +
+    `${normalized}.svg`
+  )
 }
