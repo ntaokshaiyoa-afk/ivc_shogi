@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="128"
+     height="128"
+     viewBox="0 0 128 128">
+
+  <!-- 顔 -->
+  <ellipse cx="64"
+           cy="68"
+           rx="42"
+           ry="48"
+           fill="#ffb74d"/>
+
+  <!-- ツノ -->
+  <line x1="50" y1="20"
+        x2="50" y2="36"
+        stroke="#8d6e63"
+        stroke-width="6"
+        stroke-linecap="round"/>
+
+  <line x1="78" y1="20"
+        x2="78" y2="36"
+        stroke="#8d6e63"
+        stroke-width="6"
+        stroke-linecap="round"/>
+
+  <!-- ツノ先 -->
+  <circle cx="50"
+          cy="18"
+          r="6"
+          fill="#8d6e63"/>
+
+  <circle cx="78"
+          cy="18"
+          r="6"
+          fill="#8d6e63"/>
+
+  <!-- 模様 -->
+  <circle cx="46"
+          cy="60"
+          r="8"
+          fill="#d28b36"/>
+
+  <circle cx="78"
+          cy="52"
+          r="7"
+          fill="#d28b36"/>
+
+  <circle cx="70"
+          cy="82"
+          r="9"
+          fill="#d28b36"/>
+
+  <!-- 目 -->
+  <circle cx="50"
+          cy="56"
+          r="5"
+          fill="#222"/>
+
+  <circle cx="78"
+          cy="56"
+          r="5"
+          fill="#222"/>
+
+  <!-- 鼻 -->
+  <ellipse cx="64"
+           cy="86"
+           rx="12"
+           ry="8"
+           fill="#ffe0b2"/>
+
+</svg>
