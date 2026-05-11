@@ -1,6 +1,10 @@
 // src/ui/renderBoard.js
 
 import {
+  PIECES
+} from '../core/pieceData'
+
+import {
   bouncePiece
 } from './effects'
 
@@ -35,11 +39,13 @@ export function renderBoard(
         game.selected.x === x &&
         game.selected.y === y
       ) {
+
         div.classList.add(
           'selected'
         )
       }
 
+      // 移動可能
       const canMove =
         highlights.some(m =>
           m.x === x &&
@@ -47,38 +53,76 @@ export function renderBoard(
         )
 
       if (canMove) {
+
         div.classList.add(
           'highlight'
         )
       }
 
+      // クリック
       div.addEventListener(
         'click',
         () => onCellClick(x, y)
       )
 
+      // 駒
       if (cell) {
 
-        const piece =
-          document.createElement('img')
+        const wrapper =
+          document.createElement(
+            'div'
+          )
 
-        piece.className =
+        wrapper.className =
+          'piece-wrapper'
+
+        // SVG画像
+        const img =
+          document.createElement(
+            'img'
+          )
+
+        img.className =
           'piece'
 
-        piece.src =
+        img.src =
           pieceImageSrc(cell)
 
-        piece.draggable =
+        img.draggable =
           false
 
-        piece.addEventListener(
+        // フォールバック
+        img.onerror = () => {
+
+          img.remove()
+
+          const fallback =
+            document.createElement(
+              'div'
+            )
+
+          fallback.className =
+            'piece-fallback'
+
+          fallback.textContent =
+            PIECES[cell].emoji
+
+          wrapper.appendChild(
+            fallback
+          )
+        }
+
+        img.addEventListener(
           'click',
           () => {
-            bouncePiece(piece)
+
+            bouncePiece(img)
           }
         )
 
-        div.appendChild(piece)
+        wrapper.appendChild(img)
+
+        div.appendChild(wrapper)
       }
 
       board.appendChild(div)
