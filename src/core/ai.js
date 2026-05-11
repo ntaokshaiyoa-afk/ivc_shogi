@@ -1,15 +1,21 @@
 // src/core/ai.js
 
-import { getLegalMoves } from './rules'
+import {
+  getLegalMoves
+} from './rules'
 
 export function cpuMove(game) {
 
   const candidates = []
 
   game.board.forEach((row, y) => {
+
     row.forEach((piece, x) => {
 
-      if (piece !== 'enemy') {
+      if (
+        !piece ||
+        !piece.startsWith('enemy')
+      ) {
         return
       }
 
@@ -21,9 +27,12 @@ export function cpuMove(game) {
         )
 
       moves.forEach(move => {
+
         candidates.push({
+
           fromX: x,
           fromY: y,
+
           toX: move.x,
           toY: move.y
         })
@@ -35,11 +44,30 @@ export function cpuMove(game) {
     return
   }
 
+  // 取れる手優先
+  const captureMoves =
+    candidates.filter(move => {
+
+      const target =
+        game.board[
+          move.toY
+        ][
+          move.toX
+        ]
+
+      return target
+    })
+
+  const list =
+    captureMoves.length > 0
+      ? captureMoves
+      : candidates
+
   const selected =
-    candidates[
+    list[
       Math.floor(
         Math.random() *
-        candidates.length
+        list.length
       )
     ]
 
