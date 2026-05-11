@@ -371,3 +371,12 @@ body {
     opacity: 0;
   }
 }
+
+.selected-hand {
+
+  outline:
+    5px solid #ffb300;
+
+  transform:
+    scale(1.12);
+}
