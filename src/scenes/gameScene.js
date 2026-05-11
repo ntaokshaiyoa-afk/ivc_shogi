@@ -21,6 +21,16 @@ import {
   renderBuildInfo
 } from '../ui/buildInfo'
 
+import {
+  launchConfetti
+} from '../ui/confetti'
+
+import {
+  playPiyo,
+  playPon,
+  playWin
+} from '../core/sound'
+
 import { cpuMove }
   from '../core/ai'
 
@@ -96,6 +106,9 @@ renderBuildInfo(app)
   function finishGame(winner) {
 
     playWinSound()
+    launchConfetti()
+
+playWin()
 
     if (winner === 'player') {
       message =
@@ -188,6 +201,26 @@ renderBuildInfo(app)
       return
     }
 
+    // 持ち駒ドロップ
+if (
+  game.selectedHandPiece
+) {
+
+  game.drop(x, y)
+
+  playPon()
+
+  rerender()
+
+  enemyTurn()
+
+  return
+}
+
+if (cell) {
+  playPiyo()
+}
+    
     highlights =
       game.select(x, y)
 
