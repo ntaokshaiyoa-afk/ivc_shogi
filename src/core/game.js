@@ -8,6 +8,15 @@ import {
   getLegalMoves
 } from './rules'
 
+import {
+  isEnemyPiece,
+  isPlayerPiece
+} from './ownership'
+
+import {
+  normalizePiece
+} from './capture'
+
 export class Game {
 
   constructor() {
@@ -20,6 +29,10 @@ export class Game {
 
     this.turn =
       'player'
+
+    this.playerHand = []
+
+    this.enemyHand = []
   }
 
   select(x, y) {
@@ -35,18 +48,16 @@ export class Game {
       return []
     }
 
-    // プレイヤーターン
     if (
       this.turn === 'player' &&
-      piece.startsWith('enemy')
+      isEnemyPiece(piece)
     ) {
       return []
     }
 
-    // CPUターン
     if (
       this.turn === 'enemy' &&
-      !piece.startsWith('enemy')
+      isPlayerPiece(piece)
     ) {
       return []
     }
@@ -72,12 +83,34 @@ export class Game {
     const from =
       this.selected
 
-    const piece =
+    const movingPiece =
       this.board[from.y][from.x]
 
-    // 移動
+    const target =
+      this.board[toY][toX]
+
+    // 持ち駒化
+    if (target) {
+
+      const captured =
+        normalizePiece(target)
+
+      if (
+        this.turn === 'player'
+      ) {
+        this.playerHand.push(
+          captured
+        )
+      }
+      else {
+        this.enemyHand.push(
+          captured
+        )
+      }
+    }
+
     this.board[toY][toX] =
-      piece
+      movingPiece
 
     this.board[from.y][from.x] =
       null
@@ -85,7 +118,6 @@ export class Game {
     this.selected =
       null
 
-    // ターン交代
     this.turn =
       this.turn === 'player'
         ? 'enemy'
