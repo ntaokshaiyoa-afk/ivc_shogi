@@ -49,8 +49,16 @@ export function createGameScene(app) {
 
   function rerender() {
 
-    hudRoot.innerHTML = ''
-    boardRoot.innerHTML = ''
+    app.innerHTML = ''
+
+    const hudRoot =
+      document.createElement('div')
+
+    const boardRoot =
+      document.createElement('div')
+
+    app.appendChild(hudRoot)
+    app.appendChild(boardRoot)
 
     renderHud(
       hudRoot,
@@ -63,7 +71,7 @@ export function createGameScene(app) {
       highlights,
       handleClick
     )
-    
+
     renderBuildInfo(app)
   }
 }
