@@ -3,6 +3,10 @@
 import { PIECES }
   from '../core/pieceData'
 
+import {
+  bouncePiece
+} from './effects'
+
 export function renderBoard(
   container,
   game,
@@ -46,6 +50,16 @@ export function renderBoard(
 
         piece.textContent =
           PIECES[cell].emoji
+
+        piece.addEventListener(
+          'click',
+          e => {
+
+            e.stopPropagation()
+
+            bouncePiece(piece)
+          }
+        )
 
         div.appendChild(piece)
       }
