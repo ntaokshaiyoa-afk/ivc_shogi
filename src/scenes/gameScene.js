@@ -1,6 +1,7 @@
 // src/scenes/gameScene.js
 
-import { Game } from '../core/game'
+import { Game }
+  from '../core/game'
 
 import { renderBoard }
   from '../ui/renderBoard'
@@ -32,17 +33,28 @@ export function createGameScene(app) {
   let message =
     'きみのばん！'
 
+  // 追加
+  const hudRoot =
+    document.createElement('div')
+
+  const boardRoot =
+    document.createElement('div')
+
+  app.appendChild(hudRoot)
+  app.appendChild(boardRoot)
+
   function rerender() {
 
-    app.innerHTML = ''
+    hudRoot.innerHTML = ''
+    boardRoot.innerHTML = ''
 
     renderHud(
-      app,
+      hudRoot,
       message
     )
 
     renderBoard(
-      app,
+      boardRoot,
       game,
       highlights,
       handleClick
