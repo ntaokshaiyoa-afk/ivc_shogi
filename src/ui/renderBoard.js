@@ -1,11 +1,12 @@
 // src/ui/renderBoard.js
 
-import { PIECES }
-  from '../core/pieceData'
-
 import {
   bouncePiece
 } from './effects'
+
+import {
+  pieceImageSrc
+} from './pieceImage'
 
 export function renderBoard(
   container,
@@ -28,6 +29,17 @@ export function renderBoard(
 
       div.className = 'cell'
 
+      // 選択中
+      if (
+        game.selected &&
+        game.selected.x === x &&
+        game.selected.y === y
+      ) {
+        div.classList.add(
+          'selected'
+        )
+      }
+
       const canMove =
         highlights.some(m =>
           m.x === x &&
@@ -40,25 +52,25 @@ export function renderBoard(
         )
       }
 
-      // マスクリック
       div.addEventListener(
         'click',
         () => onCellClick(x, y)
       )
 
-      // 駒
       if (cell) {
 
         const piece =
-          document.createElement('div')
+          document.createElement('img')
 
         piece.className =
           'piece'
 
-        piece.textContent =
-          PIECES[cell].emoji
+        piece.src =
+          pieceImageSrc(cell)
 
-        // アニメだけ
+        piece.draggable =
+          false
+
         piece.addEventListener(
           'click',
           () => {
