@@ -2,13 +2,6 @@ name: Format (Prettier)
 
 on:
   workflow_dispatch: # 手動で実行することもできる
-    inputs:
-      pr_num:
-        required: true
-        type: string
-      action:
-        required: true
-        type: string
 
 permissions:
   contents: write
