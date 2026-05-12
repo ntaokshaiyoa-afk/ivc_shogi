@@ -61,9 +61,24 @@ export function renderBoard(
 
       // クリック
       div.addEventListener(
-        'click',
-        () => onCellClick(x, y)
+  'click',
+  () => {
+
+    const pieceElement =
+      div.querySelector(
+        '.piece, .piece-fallback'
       )
+
+    if (pieceElement) {
+
+      bouncePiece(
+        pieceElement
+      )
+    }
+
+    onCellClick(x, y)
+  }
+)
 
       // 駒
       if (cell) {
@@ -112,14 +127,7 @@ export function renderBoard(
           )
         }
 
-        img.addEventListener(
-          'click',
-          () => {
-
-            bouncePiece(img)
-          }
-        )
-
+        
         wrapper.appendChild(img)
 
         div.appendChild(wrapper)
