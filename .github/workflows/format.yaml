@@ -1,7 +1,7 @@
 name: Format (Prettier)
 
 on:
-  workflow_dispatch: # 手動で実行することもできる
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -13,12 +13,12 @@ concurrency:
 jobs:
   prettier:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v5
         with:
-          fetch-depth: 0  # 差分計算用
+          fetch-depth: 0
 
-      # pnpm を先に入れる
       - uses: actions/setup-node@v5
         with:
           node-version: 24
@@ -26,12 +26,6 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 9
-
-      # pnpm が入った後に cache: pnpm（pnpm store を actions/setup-node が面倒見てくれる）
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 24
-          cache: pnpm
 
       - name: Detect changed files
         id: changed
@@ -49,21 +43,18 @@ jobs:
             | grep -E '\.(js|ts|tsx|jsx|json|css|md)$' \
             | grep -v '^node_modules/' || true)
 
-          # 複数行をそのまま output に渡す
           {
             echo "files<<EOF"
             echo "$CHANGED"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
-      # 依存インストール無しで Prettier（高速）
-      - name: Prettier (changed files only, no install)
+      - name: Prettier (changed files only)
         if: steps.changed.outputs.files != ''
         shell: bash
         run: |
-          # 必要ならバージョン固定（推奨）
-          # プロジェクトのprettierプラグインが必要な場合は pnpm install に戻してください
-          echo "${{ steps.changed.outputs.files }}" | xargs pnpm dlx prettier@3.5.3 --write
+          echo "${{ steps.changed.outputs.files }}" \
+            | xargs pnpm dlx prettier@3.5.3 --write
 
       - name: Commit formatting
         if: github.event_name == 'push'
@@ -73,7 +64,6 @@ jobs:
           git config --global user.email "github-actions@github.com"
 
           git add .
-          # workflowは勝手に触らない保険
           git restore --staged .github/workflows || true
 
           if ! git diff --cached --quiet; then
