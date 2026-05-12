@@ -1,231 +1,164 @@
 // src/scenes/gameScene.js
 
-import { Game }
-  from '../core/game'
+import { Game } from '../core/game'
 
 import { renderBoard }
   from '../ui/renderBoard'
 
-import {
-  renderHands
-} from '../ui/renderHands'
+import { renderHUD }
+  from '../ui/renderHUD'
 
-import {
-  renderFingerGuide
-} from '../ui/fingerGuide'
+import { renderHands }
+  from '../ui/renderHands'
 
-import { renderHud }
-  from '../ui/hud'
-
-import {
-  renderBuildInfo
-} from '../ui/buildInfo'
-
-import {
-  launchConfetti
-} from '../ui/confetti'
+import { renderBuildInfo }
+  from '../ui/renderBuildInfo'
 
 import {
   playPiyo,
-  playPon,
-  playWin
+  playPon
 } from '../core/sound'
 
-import { cpuMove }
-  from '../core/ai'
+const app =
+  document.querySelector('#app')
 
-import { checkWinner }
-  from '../core/judge'
+const game =
+  new Game()
 
-import {
-  randomMessage
-} from '../ui/message'
+// 超重要
+let highlights = []
 
-import {
-  playMoveSound,
-  playWinSound
-} from '../ui/sounds'
+// =========================
+// 描画
+// =========================
 
-export function createGameScene(app) {
+function rerender() {
 
-  const game = new Game()
+  app.innerHTML = ''
 
-  let highlights = []
+  renderHUD(
+    app,
+    game
+  )
 
-  let message =
-    'きみのばん！'
+  renderBoard(
+    app,
+    game,
+    highlights,
+    handleClick
+  )
 
-  // 追加
-  const hudRoot =
-    document.createElement('div')
+  renderHands(
+    app,
+    game,
+    handleHandSelect
+  )
 
-  const boardRoot =
-    document.createElement('div')
+  renderBuildInfo(app)
+}
 
-  app.appendChild(hudRoot)
-  app.appendChild(boardRoot)
+// =========================
+// 持ち駒選択
+// =========================
 
-  function rerender() {
-
-    app.innerHTML = ''
-
-    const hudRoot =
-      document.createElement('div')
-
-    const boardRoot =
-      document.createElement('div')
-
-    app.appendChild(hudRoot)
-    app.appendChild(boardRoot)
-
-    renderHud(
-      hudRoot,
-      message
-    )
-
-    renderBoard(
-  boardRoot,
-  game,
-  highlights,
-  handleClick
-)
-
-renderFingerGuide(
-  boardRoot,
-  highlights
-)
-
-renderHands(
-  app,
-  game
-)
-
-renderBuildInfo(app)
-  }
-
-  function finishGame(winner) {
-
-    playWinSound()
-    launchConfetti()
-
-playWin()
-
-    if (winner === 'player') {
-      message =
-        'かったー！'
-    }
-    else {
-      message =
-        'まけちゃった！'
-    }
-
-    rerender()
-
-    setTimeout(() => {
-
-      alert('もういっかい！')
-
-      location.reload()
-
-    }, 1200)
-  }
-
-  function enemyTurn() {
-
-    message =
-      'あいてのばん！'
-
-    rerender()
-
-    setTimeout(() => {
-
-      cpuMove(game)
-
-      playMoveSound()
-
-      const winner =
-        checkWinner(
-          game.board
-        )
-
-      if (winner) {
-        finishGame(winner)
-        return
-      }
-
-      message =
-        'きみのばん！'
-
-      rerender()
-
-    }, 800)
-  }
-
-  function handleClick(x, y) {
-
-    if (game.turn !== 'player') {
-      return
-    }
-
-    const isHighlighted =
-      highlights.some(m =>
-        m.x === x &&
-        m.y === y
-      )
-
-    if (isHighlighted) {
-
-      game.move(x, y)
-
-      playMoveSound()
-
-      highlights = []
-
-      const winner =
-        checkWinner(
-          game.board
-        )
-
-      if (winner) {
-        finishGame(winner)
-        return
-      }
-
-      message =
-        randomMessage()
-
-      rerender()
-
-      enemyTurn()
-
-      return
-    }
-
-    // 持ち駒ドロップ
-if (
-  game.selectedHandPiece
+function handleHandSelect(
+  piece
 ) {
 
-  game.drop(x, y)
+  game.selectHandPiece(
+    piece
+  )
 
-  playPon()
+  highlights = []
 
   rerender()
-
-  enemyTurn()
-
-  return
 }
 
-if (cell) {
-  playPiyo()
-}
-    
+// =========================
+// マスクリック
+// =========================
+
+function handleClick(x, y) {
+
+  // -----------------
+  // 持ち駒配置
+  // -----------------
+
+  if (
+    game.selectedHandPiece
+  ) {
+
+    const ok =
+      game.drop(x, y)
+
+    if (!ok) {
+      return
+    }
+
+    playPon()
+
+    highlights = []
+
+    rerender()
+
+    return
+  }
+
+  const clicked =
+    game.board[y][x]
+
+  // -----------------
+  // 移動処理
+  // -----------------
+
+  const canMove =
+    highlights.some(m =>
+      m.x === x &&
+      m.y === y
+    )
+
+  if (
+    canMove &&
+    game.selected
+  ) {
+
+    game.move(x, y)
+
+    playPon()
+
+    highlights = []
+
+    rerender()
+
+    return
+  }
+
+  // -----------------
+  // 駒選択
+  // -----------------
+
+  if (clicked) {
+
+    playPiyo()
+
     highlights =
       game.select(x, y)
 
     rerender()
+
+    return
   }
+
+  // -----------------
+  // 空マス
+  // -----------------
+
+  game.selected = null
+
+  highlights = []
 
   rerender()
 }
+
+// 初回描画
+rerender()
