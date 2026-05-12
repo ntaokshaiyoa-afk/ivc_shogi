@@ -281,6 +281,7 @@ body {
     clamp(32px, 8vw, 54px);
 
   user-select: none;
+  pointer-events: none;
 
   cursor: pointer;
 
