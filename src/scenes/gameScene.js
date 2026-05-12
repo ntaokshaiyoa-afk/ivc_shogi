@@ -15,6 +15,20 @@ import { renderHands }
 import { renderBuildInfo }
   from '../ui/renderBuildInfo'
 
+import { cpuMove }
+  from '../core/ai'
+
+import { checkWinner }
+  from '../core/judge'
+
+import {
+  launchConfetti
+} from '../ui/confetti'
+
+import {
+  playWin
+} from '../core/sound'
+
 import {
   playPiyo,
   playPon
@@ -64,6 +78,37 @@ export function createGameScene(
     )
   }
 
+  function checkGameEnd() {
+
+  const winner =
+    checkWinner(game.board)
+
+  if (!winner) {
+    return false
+  }
+
+  gameOver = true
+
+  launchConfetti()
+
+  playWin()
+
+  setTimeout(() => {
+
+    if (winner === 'player') {
+
+      alert('やったー！')
+    }
+    else {
+
+      alert('ざんねん！')
+    }
+
+  }, 200)
+
+  return true
+}
+
   // =========================
   // 持ち駒選択
   // =========================
@@ -111,7 +156,27 @@ export function createGameScene(
 
       rerender()
 
-      return
+      if (checkGameEnd()) {
+
+  return
+
+}
+
+if (game.turn === 'enemy') {
+
+  setTimeout(() => {
+
+    cpuMove(game)
+
+    rerender()
+
+    checkGameEnd()
+
+  }, 600)
+
+}
+
+return
     }
 
     const clicked =
@@ -140,7 +205,31 @@ export function createGameScene(
 
       rerender()
 
-      return
+      // 勝敗確認
+
+if (checkGameEnd()) {
+
+  return
+
+}
+
+// CPUターン
+
+if (game.turn === 'enemy') {
+
+  setTimeout(() => {
+
+    cpuMove(game)
+
+    rerender()
+
+    checkGameEnd()
+
+  }, 600)
+
+}
+
+return
     }
 
     // -----------------
