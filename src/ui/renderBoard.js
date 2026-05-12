@@ -98,7 +98,9 @@ export function renderBoard(
           )
 
         img.className =
-          'piece'
+  cell.startsWith('enemy')
+    ? 'piece enemy'
+    : 'piece'
 
         img.src =
           pieceImageSrc(cell)
