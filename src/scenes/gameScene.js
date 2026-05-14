@@ -78,16 +78,11 @@ export function createGameScene(
     )
   }
 
-  function checkGameEnd() {
+function checkGameEnd() {
 
-  const winner =
-    checkWinner(game.board)
-
-  if (!winner) {
+  if (!game.gameOver) {
     return false
   }
-
-  game.gameOver = true
 
   launchConfetti()
 
@@ -95,16 +90,19 @@ export function createGameScene(
 
   setTimeout(() => {
 
-    if (winner === 'player') {
+    const retry =
+      confirm(
+        game.winner === 'player'
+          ? 'やったー！\nもういっかいやる？'
+          : 'ざんねん！\nもういっかいやる？'
+      )
 
-      alert('やったー！')
+    if (retry) {
+
+      createGameScene(app)
     }
-    else {
 
-      alert('ざんねん！')
-    }
-
-  }, 200)
+  }, 300)
 
   return true
 }
