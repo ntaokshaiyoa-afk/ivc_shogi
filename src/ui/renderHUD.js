@@ -1,39 +1,25 @@
 // src/ui/renderHUD.js
 
-export function renderHUD(
-  app,
-  game
-) {
+export function renderHUD(app, game) {
+  const hud = document.createElement("div");
 
-  const hud =
-    document.createElement('div')
-
-  hud.className = 'hud'
+  hud.className = "hud";
 
   // メッセージ
-  let text = ''
+  let text = "";
 
-  if (
-    game.turn === 'player'
-  ) {
-
-    text = 'きみのばん！'
-  }
-  else {
-
-    text = 'あいてのばん'
+  if (game.turn === "player") {
+    text = "きみのばん！";
+  } else {
+    text = "あいてのばん";
   }
 
   // 持ち駒選択中
-  if (
-    game.selectedHandPiece
-  ) {
-
-    text =
-      'おきたいばしょをタップ！'
+  if (game.selectedHandPiece) {
+    text = "おきたいばしょをタップ！";
   }
 
-  hud.textContent = text
+  hud.textContent = text;
 
-  app.appendChild(hud)
+  app.appendChild(hud);
 }

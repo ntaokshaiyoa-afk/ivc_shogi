@@ -1,86 +1,53 @@
 // src/core/ai.js
 
-import {
-  getLegalMoves
-} from './rules'
+import { getLegalMoves } from "./rules";
 
 export function cpuMove(game) {
   if (game.gameOver) {
-  return
-}
-  
-  const candidates = []
+    return;
+  }
+
+  const candidates = [];
 
   game.board.forEach((row, y) => {
-
     row.forEach((piece, x) => {
-
-      if (
-        !piece ||
-        !piece.startsWith('enemy')
-      ) {
-        return
+      if (!piece || !piece.startsWith("enemy")) {
+        return;
       }
 
-      const moves =
-        getLegalMoves(
-          game.board,
-          x,
-          y
-        )
+      const moves = getLegalMoves(game.board, x, y);
 
-      moves.forEach(move => {
-
+      moves.forEach((move) => {
         candidates.push({
-
           fromX: x,
           fromY: y,
 
           toX: move.x,
-          toY: move.y
-        })
-      })
-    })
-  })
+          toY: move.y,
+        });
+      });
+    });
+  });
 
   if (candidates.length === 0) {
-    return
+    return;
   }
 
   // 取れる手優先
-  const captureMoves =
-    candidates.filter(move => {
+  const captureMoves = candidates.filter((move) => {
+    const target = game.board[move.toY][move.toX];
 
-      const target =
-        game.board[
-          move.toY
-        ][
-          move.toX
-        ]
+    return target;
+  });
 
-      return target
-    })
+  const list = captureMoves.length > 0 ? captureMoves : candidates;
 
-  const list =
-    captureMoves.length > 0
-      ? captureMoves
-      : candidates
-
-  const selected =
-    list[
-      Math.floor(
-        Math.random() *
-        list.length
-      )
-    ]
+  const selected = list[Math.floor(Math.random() * list.length)];
 
   game.selected = {
     x: selected.fromX,
-    y: selected.fromY
-  }
+    y: selected.fromY,
+  };
 
-  game.move(
-    selected.toX,
-    selected.toY
-  )
+  game.move(selected.toX, selected.toY);
 }

@@ -1,15 +1,11 @@
 // src/ui/hud.js
 
-export function renderHud(
-  app,
-  text
-) {
-  const hud =
-    document.createElement('div')
+export function renderHud(app, text) {
+  const hud = document.createElement("div");
 
-  hud.className = 'hud'
+  hud.className = "hud";
 
-  hud.textContent = text
+  hud.textContent = text;
 
-  app.appendChild(hud)
+  app.appendChild(hud);
 }

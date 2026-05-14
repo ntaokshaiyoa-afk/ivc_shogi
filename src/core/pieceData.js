@@ -1,44 +1,43 @@
 // src/core/pieceData.js
 
 export const PIECES = {
-
   chick: {
-    emoji: '🐥',
-    name: 'ひよこ'
+    emoji: "🐥",
+    name: "ひよこ",
   },
 
   enemyChick: {
-    emoji: '🐤',
-    name: 'ひよこ'
+    emoji: "🐤",
+    name: "ひよこ",
   },
 
   lion: {
-    emoji: '🦁',
-    name: 'ライオン'
+    emoji: "🦁",
+    name: "ライオン",
   },
 
   enemyLion: {
-    emoji: '🦁',
-    name: 'ライオン'
+    emoji: "🦁",
+    name: "ライオン",
   },
 
   giraffe: {
-    emoji: '🦒',
-    name: 'きりん'
+    emoji: "🦒",
+    name: "きりん",
   },
 
   enemyGiraffe: {
-    emoji: '🦒',
-    name: 'きりん'
+    emoji: "🦒",
+    name: "きりん",
   },
 
   elephant: {
-    emoji: '🐘',
-    name: 'ぞう'
+    emoji: "🐘",
+    name: "ぞう",
   },
 
   enemyElephant: {
-    emoji: '🐘',
-    name: 'ぞう'
-  }
-}
+    emoji: "🐘",
+    name: "ぞう",
+  },
+};

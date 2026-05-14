@@ -1,7 +1,7 @@
-import './style.css'
+import "./style.css";
 
-import { createGameScene } from './scenes/gameScene'
+import { createGameScene } from "./scenes/gameScene";
 
-const app = document.querySelector('#app')
+const app = document.querySelector("#app");
 
-createGameScene(app)
+createGameScene(app);

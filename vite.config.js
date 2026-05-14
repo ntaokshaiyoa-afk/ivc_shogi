@@ -1,88 +1,57 @@
 // vite.config.js
 
-import { defineConfig }
-  from 'vite'
+import { defineConfig } from "vite";
 
-import {
-  VitePWA
-} from 'vite-plugin-pwa'
+import { VitePWA } from "vite-plugin-pwa";
 
 function buildTimeJST() {
+  const now = new Date();
 
-  const now = new Date()
+  const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
 
-  const jst =
-    new Date(
-      now.getTime() +
-      (9 * 60 * 60 * 1000)
-    )
-
-  return jst
-    .toISOString()
-    .replace('T', ' ')
-    .substring(0, 16)
-    + ' JST'
+  return jst.toISOString().replace("T", " ").substring(0, 16) + " JST";
 }
 
 export default defineConfig({
-
-  base: '/ivc_shogi/',
+  base: "/ivc_shogi/",
 
   define: {
-    __BUILD_TIME__:
-      JSON.stringify(
-        buildTimeJST()
-      )
+    __BUILD_TIME__: JSON.stringify(buildTimeJST()),
   },
 
   plugins: [
-
     VitePWA({
-
-      registerType:
-        'autoUpdate',
+      registerType: "autoUpdate",
 
       manifest: {
+        name: "どうぶつしょうぎ",
 
-        name:
-          'どうぶつしょうぎ',
+        short_name: "どうぶつしょうぎ",
 
-        short_name:
-          'どうぶつしょうぎ',
+        theme_color: "#ffd54f",
 
-        theme_color:
-          '#ffd54f',
+        background_color: "#fff8e1",
 
-        background_color:
-          '#fff8e1',
-
-        display:
-          'standalone',
+        display: "standalone",
 
         icons: [
           {
-            src:
-              '/icons/icon-192.png',
+            src: "/icons/icon-192.png",
 
-            sizes:
-              '192x192',
+            sizes: "192x192",
 
-            type:
-              'image/png'
+            type: "image/png",
           },
 
           {
-            src:
-              '/icons/icon-512.png',
+            src: "/icons/icon-512.png",
 
-            sizes:
-              '512x512',
+            sizes: "512x512",
 
-            type:
-              'image/png'
-          }
-        ]
-      }
-    })
-  ]
-})
+            type: "image/png",
+          },
+        ],
+      },
+    }),
+  ],
+});

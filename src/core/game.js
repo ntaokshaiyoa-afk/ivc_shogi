@@ -1,52 +1,36 @@
 // src/core/game.js
 
-import {
-  createInitialBoard
-} from './board'
+import { createInitialBoard } from "./board";
 
-import {
-  getLegalMoves
-} from './rules'
+import { getLegalMoves } from "./rules";
 
-import {
-  isEnemyPiece,
-  isPlayerPiece
-} from './ownership'
+import { isEnemyPiece, isPlayerPiece } from "./ownership";
 
-import {
-  normalizePiece
-} from './capture'
+import { normalizePiece } from "./capture";
 
-import {
-  checkWinner
-} from './judge'
+import { checkWinner } from "./judge";
 
 export class Game {
-
   constructor() {
-    this.gameOver = false
-    this.winner = null
+    this.gameOver = false;
+    this.winner = null;
 
     // 盤面
-    this.board =
-      createInitialBoard()
+    this.board = createInitialBoard();
 
     // 選択中盤面駒
-    this.selected =
-      null
+    this.selected = null;
 
     // 選択中持ち駒
-    this.selectedHandPiece =
-      null
+    this.selectedHandPiece = null;
 
     // 手番
-    this.turn =
-      'player'
+    this.turn = "player";
 
     // 持ち駒
-    this.playerHand = []
+    this.playerHand = [];
 
-    this.enemyHand = []
+    this.enemyHand = [];
   }
 
   // =========================
@@ -54,52 +38,37 @@ export class Game {
   // =========================
 
   select(x, y) {
-
     // 持ち駒選択解除
-    this.selectedHandPiece =
-      null
+    this.selectedHandPiece = null;
 
     if (this.gameOver) {
-  return []
-}
-    
-    const piece =
-      this.board[y][x]
+      return [];
+    }
+
+    const piece = this.board[y][x];
 
     if (!piece) {
+      this.selected = null;
 
-      this.selected =
-        null
-
-      return []
+      return [];
     }
 
     // プレイヤーターンで敵駒触れない
-    if (
-      this.turn === 'player' &&
-      isEnemyPiece(piece)
-    ) {
-      return []
+    if (this.turn === "player" && isEnemyPiece(piece)) {
+      return [];
     }
 
     // CPUターンで自駒触れない
-    if (
-      this.turn === 'enemy' &&
-      isPlayerPiece(piece)
-    ) {
-      return []
+    if (this.turn === "enemy" && isPlayerPiece(piece)) {
+      return [];
     }
 
     this.selected = {
       x,
-      y
-    }
+      y,
+    };
 
-    return getLegalMoves(
-      this.board,
-      x,
-      y
-    )
+    return getLegalMoves(this.board, x, y);
   }
 
   // =========================
@@ -107,77 +76,52 @@ export class Game {
   // =========================
 
   move(toX, toY) {
-
     if (!this.selected) {
-      return
+      return;
     }
 
-    const winner =
-  checkWinner(this.board)
+    const winner = checkWinner(this.board);
 
-if (winner) {
+    if (winner) {
+      this.gameOver = true;
+    }
 
-  this.gameOver = true
-}
+    const from = this.selected;
 
-    const from =
-      this.selected
+    const movingPiece = this.board[from.y][from.x];
 
-    const movingPiece =
-      this.board[from.y][from.x]
-
-    const target =
-      this.board[toY][toX]
+    const target = this.board[toY][toX];
 
     // 駒取得
     if (target) {
-      const captured =
-        normalizePiece(target)
+      const captured = normalizePiece(target);
 
-      if (
-        this.turn === 'player'
-      ) {
-
-        this.playerHand.push(
-          captured
-        )
-      }
-      else {
-
-        this.enemyHand.push(
-          captured
-        )
+      if (this.turn === "player") {
+        this.playerHand.push(captured);
+      } else {
+        this.enemyHand.push(captured);
       }
     }
 
     // 移動
-    this.board[toY][toX] =
-      movingPiece
+    this.board[toY][toX] = movingPiece;
 
-    this.board[from.y][from.x] =
-      null
+    this.board[from.y][from.x] = null;
 
     // 選択解除
-    this.selected =
-      null
+    this.selected = null;
 
-    const winner =
-  checkWinner(this.board)
+    const winner = checkWinner(this.board);
 
-if (winner) {
+    if (winner) {
+      this.gameOver = true;
+      this.winner = winner;
 
-  this.gameOver = true
-  this.winner = winner
+      return;
+    }
 
-  return
-}
-
-    
     // ターン変更
-    this.turn =
-      this.turn === 'player'
-        ? 'enemy'
-        : 'player'
+    this.turn = this.turn === "player" ? "enemy" : "player";
   }
 
   // =========================
@@ -185,13 +129,10 @@ if (winner) {
   // =========================
 
   selectHandPiece(piece) {
-
     // 盤面選択解除
-    this.selected =
-      null
+    this.selected = null;
 
-    this.selectedHandPiece =
-      piece
+    this.selectedHandPiece = piece;
   }
 
   // =========================
@@ -200,48 +141,35 @@ if (winner) {
 
   drop(toX, toY) {
     if (this.gameOver) {
-  return false
-}
-    
+      return false;
+    }
+
     // 選択なし
-    if (
-      !this.selectedHandPiece
-    ) {
-      return false
+    if (!this.selectedHandPiece) {
+      return false;
     }
 
     // 空きマスのみ
-    if (
-      this.board[toY][toX]
-    ) {
-      return false
+    if (this.board[toY][toX]) {
+      return false;
     }
 
     // 配置
-    this.board[toY][toX] =
-      this.selectedHandPiece
+    this.board[toY][toX] = this.selectedHandPiece;
 
     // 持ち駒から削除
-    const index =
-      this.playerHand.indexOf(
-        this.selectedHandPiece
-      )
+    const index = this.playerHand.indexOf(this.selectedHandPiece);
 
     if (index >= 0) {
-
-      this.playerHand.splice(
-        index,
-        1
-      )
+      this.playerHand.splice(index, 1);
     }
 
     // 選択解除
-    this.selectedHandPiece =
-      null
+    this.selectedHandPiece = null;
 
     // ターン変更
-    this.turn = 'enemy'
+    this.turn = "enemy";
 
-    return true
+    return true;
   }
 }

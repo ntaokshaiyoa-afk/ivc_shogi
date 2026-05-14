@@ -1,237 +1,166 @@
 // src/scenes/gameScene.js
 
-import { Game }
-  from '../core/game'
+import { Game } from "../core/game";
 
-import { renderBoard }
-  from '../ui/renderBoard'
+import { renderBoard } from "../ui/renderBoard";
 
-import { renderHUD }
-  from '../ui/renderHUD'
+import { renderHUD } from "../ui/renderHUD";
 
-import { renderHands }
-  from '../ui/renderHands'
+import { renderHands } from "../ui/renderHands";
 
-import { renderBuildInfo }
-  from '../ui/renderBuildInfo'
+import { renderBuildInfo } from "../ui/renderBuildInfo";
 
-import { cpuMove }
-  from '../core/ai'
+import { cpuMove } from "../core/ai";
 
-import { checkWinner }
-  from '../core/judge'
+import { checkWinner } from "../core/judge";
 
-import {
-  launchConfetti
-} from '../ui/confetti'
+import { launchConfetti } from "../ui/confetti";
 
-import {
-  playWin
-} from '../core/sound'
+import { playWin } from "../core/sound";
 
-import {
-  playPiyo,
-  playPon
-} from '../core/sound'
+import { playPiyo, playPon } from "../core/sound";
 
 // =========================
 // Scene
 // =========================
 
-export function createGameScene(
-  app
-) {
-  app.innerHTML = ''
-  
-  const game =
-    new Game()
+export function createGameScene(app) {
+  app.innerHTML = "";
 
-  let highlights = []
+  const game = new Game();
+
+  let highlights = [];
 
   // =========================
   // 描画
   // =========================
 
   function rerender() {
+    app.innerHTML = "";
 
-    app.innerHTML = ''
+    renderHUD(app, game);
 
-    renderHUD(
-      app,
-      game
-    )
+    renderBoard(app, game, highlights, handleClick);
 
-    renderBoard(
-      app,
-      game,
-      highlights,
-      handleClick
-    )
+    renderHands(app, game, handleHandSelect);
 
-    renderHands(
-      app,
-      game,
-      handleHandSelect
-    )
-
-    renderBuildInfo(
-      app
-    )
+    renderBuildInfo(app);
   }
 
-function checkGameEnd() {
-
-  if (!game.gameOver) {
-    return false
-  }
-
-  launchConfetti()
-
-  playWin()
-
-  setTimeout(() => {
-
-    const retry =
-      confirm(
-        game.winner === 'player'
-          ? 'やったー！\nもういっかいやる？'
-          : 'ざんねん！\nもういっかいやる？'
-      )
-
-    if (retry) {
-
-      createGameScene(app)
+  function checkGameEnd() {
+    if (!game.gameOver) {
+      return false;
     }
 
-  }, 300)
+    launchConfetti();
 
-  return true
-}
+    playWin();
+
+    setTimeout(() => {
+      const retry = confirm(
+        game.winner === "player"
+          ? "やったー！\nもういっかいやる？"
+          : "ざんねん！\nもういっかいやる？",
+      );
+
+      if (retry) {
+        createGameScene(app);
+      }
+    }, 300);
+
+    return true;
+  }
 
   // =========================
   // 持ち駒選択
   // =========================
 
-  function handleHandSelect(
-    piece
-  ) {
+  function handleHandSelect(piece) {
+    game.selectHandPiece(piece);
 
-    game.selectHandPiece(
-      piece
-    )
+    highlights = [];
 
-    highlights = []
-
-    rerender()
+    rerender();
   }
 
   // =========================
   // マスクリック
   // =========================
 
-  function handleClick(
-    x,
-    y
-  ) {
-    
-if (game.gameOver) {
-  return
-}
+  function handleClick(x, y) {
+    if (game.gameOver) {
+      return;
+    }
     // -----------------
     // 持ち駒配置
     // -----------------
 
-    if (
-      game.selectedHandPiece
-    ) {
-
-      const ok =
-        game.drop(x, y)
+    if (game.selectedHandPiece) {
+      const ok = game.drop(x, y);
 
       if (!ok) {
-        return
+        return;
       }
 
-      playPon()
+      playPon();
 
-      highlights = []
+      highlights = [];
 
-      rerender()
+      rerender();
 
       if (checkGameEnd()) {
+        return;
+      }
 
-  return
+      if (game.turn === "enemy") {
+        setTimeout(() => {
+          cpuMove(game);
 
-}
+          rerender();
 
-if (game.turn === 'enemy') {
+          checkGameEnd();
+        }, 600);
+      }
 
-  setTimeout(() => {
-
-    cpuMove(game)
-
-    rerender()
-
-    checkGameEnd()
-
-  }, 600)
-
-}
-
-return
+      return;
     }
 
-    const clicked =
-      game.board[y][x]
+    const clicked = game.board[y][x];
 
     // -----------------
     // 移動
     // -----------------
 
-    const canMove =
-      highlights.some(m =>
-        m.x === x &&
-        m.y === y
-      )
+    const canMove = highlights.some((m) => m.x === x && m.y === y);
 
-    if (
-      canMove &&
-      game.selected
-    ) {
+    if (canMove && game.selected) {
+      game.move(x, y);
 
-      game.move(x, y)
+      playPon();
 
-      playPon()
+      highlights = [];
 
-      highlights = []
-
-      rerender()
+      rerender();
 
       // 勝敗確認
 
-if (checkGameEnd()) {
+      if (checkGameEnd()) {
+        return;
+      }
 
-  return
+      // CPUターン
 
-}
+      if (game.turn === "enemy") {
+        setTimeout(() => {
+          cpuMove(game);
 
-// CPUターン
+          rerender();
 
-if (game.turn === 'enemy') {
+          checkGameEnd();
+        }, 600);
+      }
 
-  setTimeout(() => {
-
-    cpuMove(game)
-
-    rerender()
-
-    checkGameEnd()
-
-  }, 600)
-
-}
-
-return
+      return;
     }
 
     // -----------------
@@ -239,29 +168,26 @@ return
     // -----------------
 
     if (clicked) {
+      playPiyo();
 
-      playPiyo()
+      highlights = game.select(x, y);
 
-      highlights =
-        game.select(x, y)
+      rerender();
 
-      rerender()
-
-      return
+      return;
     }
 
     // -----------------
     // 空マス
     // -----------------
 
-    game.selected =
-      null
+    game.selected = null;
 
-    highlights = []
+    highlights = [];
 
-    rerender()
+    rerender();
   }
 
   // 初回描画
-  rerender()
+  rerender();
 }

@@ -1,143 +1,81 @@
 // src/ui/renderBoard.js
 
-import {
-  PIECES
-} from '../core/pieceData'
+import { PIECES } from "../core/pieceData";
 
-import {
-  bouncePiece
-} from './effects'
+import { bouncePiece } from "./effects";
 
-import {
-  pieceImageSrc
-} from './pieceImage'
+import { pieceImageSrc } from "./pieceImage";
 
-export function renderBoard(
-  container,
-  game,
-  highlights,
-  onCellClick
-) {
+export function renderBoard(container, game, highlights, onCellClick) {
+  const board = document.createElement("div");
 
-  const board =
-    document.createElement('div')
-
-  board.className = 'board'
+  board.className = "board";
 
   game.board.forEach((row, y) => {
-
     row.forEach((cell, x) => {
+      const div = document.createElement("div");
 
-      const div =
-        document.createElement('div')
-
-      div.className = 'cell'
+      div.className = "cell";
 
       // 選択中
-      if (
-        game.selected &&
-        game.selected.x === x &&
-        game.selected.y === y
-      ) {
-
-        div.classList.add(
-          'selected'
-        )
+      if (game.selected && game.selected.x === x && game.selected.y === y) {
+        div.classList.add("selected");
       }
 
       // 移動可能
-      const canMove =
-        highlights.some(m =>
-          m.x === x &&
-          m.y === y
-        )
+      const canMove = highlights.some((m) => m.x === x && m.y === y);
 
       if (canMove) {
-
-        div.classList.add(
-          'highlight'
-        )
+        div.classList.add("highlight");
       }
 
       // クリック
-      div.addEventListener(
-  'click',
-  () => {
+      div.addEventListener("click", () => {
+        const pieceElement = div.querySelector(".piece, .piece-fallback");
 
-    const pieceElement =
-      div.querySelector(
-        '.piece, .piece-fallback'
-      )
+        if (pieceElement) {
+          bouncePiece(pieceElement);
+        }
 
-    if (pieceElement) {
-
-      bouncePiece(
-        pieceElement
-      )
-    }
-
-    onCellClick(x, y)
-  }
-)
+        onCellClick(x, y);
+      });
 
       // 駒
       if (cell) {
+        const wrapper = document.createElement("div");
 
-        const wrapper =
-          document.createElement(
-            'div'
-          )
-
-        wrapper.className =
-          'piece-wrapper'
+        wrapper.className = "piece-wrapper";
 
         // SVG画像
-        const img =
-          document.createElement(
-            'img'
-          )
+        const img = document.createElement("img");
 
-        img.className =
-  cell.startsWith('enemy')
-    ? 'piece enemy'
-    : 'piece'
+        img.className = cell.startsWith("enemy") ? "piece enemy" : "piece";
 
-        img.src =
-          pieceImageSrc(cell)
+        img.src = pieceImageSrc(cell);
 
-        img.draggable =
-          false
+        img.draggable = false;
 
         // フォールバック
         img.onerror = () => {
+          img.remove();
 
-          img.remove()
+          const fallback = document.createElement("div");
 
-          const fallback =
-            document.createElement(
-              'div'
-            )
+          fallback.className = "piece-fallback";
 
-          fallback.className =
-            'piece-fallback'
+          fallback.textContent = PIECES[cell].emoji;
 
-          fallback.textContent =
-            PIECES[cell].emoji
+          wrapper.appendChild(fallback);
+        };
 
-          wrapper.appendChild(
-            fallback
-          )
-        }
+        wrapper.appendChild(img);
 
-        
-        wrapper.appendChild(img)
-
-        div.appendChild(wrapper)
+        div.appendChild(wrapper);
       }
 
-      board.appendChild(div)
-    })
-  })
+      board.appendChild(div);
+    });
+  });
 
-  container.appendChild(board)
+  container.appendChild(board);
 }
