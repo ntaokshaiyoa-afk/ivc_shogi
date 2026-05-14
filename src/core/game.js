@@ -111,11 +111,11 @@ export class Game {
     // 選択解除
     this.selected = null;
 
-    const winner = checkWinner(this.board);
+    const winner_moved = checkWinner(this.board);
 
-    if (winner) {
+    if (winner_moved) {
       this.gameOver = true;
-      this.winner = winner;
+      this.winner = winner_moved;
 
       return;
     }
