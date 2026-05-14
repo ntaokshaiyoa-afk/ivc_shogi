@@ -87,7 +87,7 @@ export function createGameScene(
     return false
   }
 
-  gameOver = true
+  game.gameOver = true
 
   launchConfetti()
 
@@ -135,7 +135,7 @@ export function createGameScene(
     y
   ) {
     
-if (gameOver) {
+if (game.gameOver) {
   return
 }
     // -----------------
