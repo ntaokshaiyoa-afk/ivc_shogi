@@ -134,7 +134,10 @@ export function createGameScene(
     x,
     y
   ) {
-
+    
+if (gameOver) {
+  return
+}
     // -----------------
     // 持ち駒配置
     // -----------------
