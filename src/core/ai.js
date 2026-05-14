@@ -5,7 +5,10 @@ import {
 } from './rules'
 
 export function cpuMove(game) {
-
+  if (game.gameOver) {
+  return
+}
+  
   const candidates = []
 
   game.board.forEach((row, y) => {
