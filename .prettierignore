@@ -2,3 +2,29 @@ node_modules
 dist
 build
 coverage
+.next
+.nuxt
+.cache
+temp
+tmp
+
+# generated
+*.min.js
+*.bundle.js
+
+# binary
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.pdf
+
+# logs
+*.log
+
+# package manager
+pnpm-lock.yaml
+
+# optional
+.github/workflows
