@@ -12,8 +12,6 @@ import { renderBuildInfo } from "../ui/renderBuildInfo";
 
 import { cpuMove } from "../core/ai";
 
-import { checkWinner } from "../core/judge";
-
 import { launchConfetti } from "../ui/confetti";
 
 import { playWin } from "../core/sound";
