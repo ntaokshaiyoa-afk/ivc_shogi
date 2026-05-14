@@ -1,4 +1,4 @@
-// src/core/game.js
+// src/core/game.js 
 
 import { createInitialBoard } from "./board";
 
