@@ -25,6 +25,7 @@ export class Game {
 
   constructor() {
     this.gameOver = false
+    this.winner = null
 
     // 盤面
     this.board =
@@ -130,26 +131,6 @@ if (winner) {
 
     // 駒取得
     if (target) {
-
-  // ライオン取得で終了
-  if (
-    target === 'lion' ||
-    target === 'enemyLion'
-  ) {
-
-    this.board[toY][toX] =
-      movingPiece
-
-    this.board[from.y][from.x] =
-      null
-
-    this.selected = null
-
-    this.gameOver = true
-
-    return
-  }
-
       const captured =
         normalizePiece(target)
 
@@ -180,6 +161,18 @@ if (winner) {
     this.selected =
       null
 
+    const winner =
+  checkWinner(this.board)
+
+if (winner) {
+
+  this.gameOver = true
+  this.winner = winner
+
+  return
+}
+
+    
     // ターン変更
     this.turn =
       this.turn === 'player'
