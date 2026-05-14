@@ -131,6 +131,25 @@ if (winner) {
     // 駒取得
     if (target) {
 
+  // ライオン取得で終了
+  if (
+    target === 'lion' ||
+    target === 'enemyLion'
+  ) {
+
+    this.board[toY][toX] =
+      movingPiece
+
+    this.board[from.y][from.x] =
+      null
+
+    this.selected = null
+
+    this.gameOver = true
+
+    return
+  }
+
       const captured =
         normalizePiece(target)
 
