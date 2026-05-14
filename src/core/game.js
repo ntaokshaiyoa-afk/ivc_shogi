@@ -17,9 +17,14 @@ import {
   normalizePiece
 } from './capture'
 
+import {
+  checkWinner
+} from './judge'
+
 export class Game {
 
   constructor() {
+    this.gameOver = false
 
     // 盤面
     this.board =
@@ -53,6 +58,10 @@ export class Game {
     this.selectedHandPiece =
       null
 
+    if (this.gameOver) {
+  return []
+}
+    
     const piece =
       this.board[y][x]
 
@@ -101,6 +110,14 @@ export class Game {
     if (!this.selected) {
       return
     }
+
+    const winner =
+  checkWinner(this.board)
+
+if (winner) {
+
+  this.gameOver = true
+}
 
     const from =
       this.selected
@@ -170,7 +187,10 @@ export class Game {
   // =========================
 
   drop(toX, toY) {
-
+    if (this.gameOver) {
+  return false
+}
+    
     // 選択なし
     if (
       !this.selectedHandPiece
