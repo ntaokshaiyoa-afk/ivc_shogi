@@ -2,6 +2,10 @@ name: Format (Prettier)
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
 
 permissions:
   contents: write
@@ -27,43 +31,20 @@ jobs:
         with:
           version: 9
 
-      - name: Detect changed files
-        id: changed
+      - name: Run Prettier
         shell: bash
         run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            base="${{ github.event.pull_request.base.sha }}"
-            head="${{ github.sha }}"
-          else
-            base="${{ github.event.before }}"
-            head="${{ github.sha }}"
-          fi
-
-          CHANGED=$(git diff --name-only "$base" "$head" \
-            | grep -E '\.(js|ts|tsx|jsx|json|css|md)$' \
-            | grep -v '^node_modules/' || true)
-
-          {
-            echo "files<<EOF"
-            echo "$CHANGED"
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
-
-      - name: Prettier (changed files only)
-        if: steps.changed.outputs.files != ''
-        shell: bash
-        run: |
-          echo "${{ steps.changed.outputs.files }}" \
-            | xargs pnpm dlx prettier@3.5.3 --write
+          pnpm dlx prettier@3.5.3 . --write
 
       - name: Commit formatting
-        if: github.event_name == 'push'
         shell: bash
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
           git add .
+
+          # workflow 自体は自動整形対象外にする保険
           git restore --staged .github/workflows || true
 
           if ! git diff --cached --quiet; then
