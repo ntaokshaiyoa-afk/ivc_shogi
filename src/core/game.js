@@ -74,108 +74,78 @@ export class Game {
   // =========================
 
   move(toX, toY) {
-
-  if (!this.selected) {
-    return
-  }
-
-  if (this.gameOver) {
-    return
-  }
-
-  const from =
-    this.selected
-
-  const movingPiece =
-    this.board[from.y][from.x]
-
-  const target =
-    this.board[toY][toX]
-
-  // =========================
-  // ライオン取得
-  // =========================
-
-  if (
-    target === 'lion'
-  ) {
-
-    this.board[toY][toX] =
-      movingPiece
-
-    this.board[from.y][from.x] =
-      null
-
-    this.selected = null
-
-    this.gameOver = true
-    this.winner = 'enemy'
-
-    return
-  }
-
-  if (
-    target === 'enemyLion'
-  ) {
-
-    this.board[toY][toX] =
-      movingPiece
-
-    this.board[from.y][from.x] =
-      null
-
-    this.selected = null
-
-    this.gameOver = true
-    this.winner = 'player'
-
-    return
-  }
-
-  // =========================
-  // 通常取得
-  // =========================
-
-  if (target) {
-
-    const captured =
-      normalizePiece(target)
-
-    if (
-      this.turn === 'player'
-    ) {
-
-      this.playerHand.push(
-        captured
-      )
+    if (!this.selected) {
+      return;
     }
-    else {
 
-      this.enemyHand.push(
-        captured
-      )
+    if (this.gameOver) {
+      return;
     }
+
+    const from = this.selected;
+
+    const movingPiece = this.board[from.y][from.x];
+
+    const target = this.board[toY][toX];
+
+    // =========================
+    // ライオン取得
+    // =========================
+
+    if (target === "lion") {
+      this.board[toY][toX] = movingPiece;
+
+      this.board[from.y][from.x] = null;
+
+      this.selected = null;
+
+      this.gameOver = true;
+      this.winner = "enemy";
+
+      return;
+    }
+
+    if (target === "enemyLion") {
+      this.board[toY][toX] = movingPiece;
+
+      this.board[from.y][from.x] = null;
+
+      this.selected = null;
+
+      this.gameOver = true;
+      this.winner = "player";
+
+      return;
+    }
+
+    // =========================
+    // 通常取得
+    // =========================
+
+    if (target) {
+      const captured = normalizePiece(target);
+
+      if (this.turn === "player") {
+        this.playerHand.push(captured);
+      } else {
+        this.enemyHand.push(captured);
+      }
+    }
+
+    // =========================
+    // 移動
+    // =========================
+
+    this.board[toY][toX] = movingPiece;
+
+    this.board[from.y][from.x] = null;
+
+    // 選択解除
+    this.selected = null;
+
+    // ターン変更
+    this.turn = this.turn === "player" ? "enemy" : "player";
   }
-
-  // =========================
-  // 移動
-  // =========================
-
-  this.board[toY][toX] =
-    movingPiece
-
-  this.board[from.y][from.x] =
-    null
-
-  // 選択解除
-  this.selected = null
-
-  // ターン変更
-  this.turn =
-    this.turn === 'player'
-      ? 'enemy'
-      : 'player'
-}
 
   // =========================
   // 持ち駒選択
