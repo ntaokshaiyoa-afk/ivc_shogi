@@ -41,7 +41,8 @@ import {
 export function createGameScene(
   app
 ) {
-
+  app.innerHTML = ''
+  
   const game =
     new Game()
 
